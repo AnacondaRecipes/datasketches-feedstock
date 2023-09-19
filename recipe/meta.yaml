@@ -17,8 +17,10 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    # git for clone of catch2-populate
+    - git  # [linux]
     - cmake
-    - make
+    - make  # [not win]
   host:
     - pip
     - pybind11 2.10.4
