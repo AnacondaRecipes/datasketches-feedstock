@@ -6,25 +6,25 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/datasketches-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 6a57e4d1e93ccf1035604e3d9181dbe490281673833ce5be477c197b1195c840
 
 build:
-  script: {{ PYTHON }} -m pip install . -vv
-  number: 1
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-  host:
-    - python
-    - wheel
-    - setuptools >=30.3.0
-    - cmake >=3.16
+    - cmake
     - make
-    - pybind11 >=2.6.0
+  host:
     - pip
+    - pybind11 2.10.4
+    - python
+    - setuptools
+    - wheel
   run:
     - python
     - numpy
@@ -32,16 +32,23 @@ requirements:
 test:
   imports:
     - datasketches
-  commands:
-    - pip check
   requires:
     - pip
+  commands:
+    - pip check
 
 about:
-  home: http://datasketches.apache.org
-  dev_url: https://github.com/apache/datasketches-cpp/tree/master/python
+  home: https://datasketches.apache.org
+  dev_url: https://github.com/apache/datasketches-cpp
+  doc_url: https://datasketches.apache.org/
   summary: The Apache DataSketches Library for Python
+  description: |
+    A software library of stochastic streaming algorithms.
+    In the analysis of big data there are often problem queries that don't scale because they require huge compute resources and time to generate exact results. Examples include count distinct, quantiles, most-frequent items, joins, matrix computations, and graph analysis.
+    If approximate results are acceptable, there is a class of specialized algorithms, called streaming algorithms, or sketches that can produce results orders-of magnitude faster and with mathematically proven error bounds. For interactive queries there may not be other viable alternatives, and in the case of real-time analysis, sketches are the only known solution.
+    This package provides a variety of sketches as described below. Wherever a specific type of sketch exists in Apache DataSketches packages for other languages, the sketches will be portable between languages (for platforms with the same endianness).
   license: Apache-2.0
+  license_family: Apache
   license_file:
     - LICENSE
     - NOTICE
