@@ -11,6 +11,7 @@ source:
 
 build:
   number: 0
+  skip: true  # [not win]
   missing_dso_whitelist:  # [s390x]
     - "$RPATH/ld64.so.1"  # [s390x]
 
@@ -20,10 +21,10 @@ requirements:
     - {{ compiler('cxx') }}
     # git for clone of catch2-populate
     - git  # [linux]
+  host:
     - cmake
     - make   # [not win]
     - ninja  # [win]
-  host:
     - pip
     - pybind11 2.10.4
     - python
