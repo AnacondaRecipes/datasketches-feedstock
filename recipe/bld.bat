@@ -25,6 +25,8 @@ echo "Installing..."
 ninja install
 if errorlevel 1 exit /b 1
 
+cd ..
+if errorlevel 1 exit /b 1
 
 %PYTHON% -m pip install . --no-deps --no-build-isolation -vv
 
