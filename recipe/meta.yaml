@@ -12,8 +12,7 @@ source:
 build:
   number: 0
   skip: true  # [not win]
-  script: 
-    - {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  script: {{ PYTHON }} -m pip install . -vv
   missing_dso_whitelist:  # [s390x]
     - "$RPATH/ld64.so.1"  # [s390x]
 
@@ -21,17 +20,14 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    # git for clone of catch2-populate
-    - git  # [linux]
-    - cmake
-    - make   # [not win]
-    - ninja  # [win]
   host:
-    - pip
-    - pybind11 2.10.4
     - python
-    - setuptools
     - wheel
+    - setuptools >=30.3.0
+    - cmake >=3.16
+    - make
+    - pybind11 >=2.6.0
+    - pip
   run:
     - python
     - numpy
