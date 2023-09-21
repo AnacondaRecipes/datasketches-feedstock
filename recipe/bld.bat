@@ -1,7 +1,7 @@
 :: cmd
 echo "Building %PKG_NAME%."
 
-
+dir
 :: Generate the build files.
 echo "Generating the build files..."
 cmake . %CMAKE_ARGS% ^
