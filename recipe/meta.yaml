@@ -25,7 +25,7 @@ requirements:
     - wheel
     - setuptools >=30.3.0
     - cmake >=3.16
-    - make
+    - make  # [not win]
     - pybind11 >=2.6.0
     - pip
   run:
