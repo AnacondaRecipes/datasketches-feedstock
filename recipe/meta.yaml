@@ -8,6 +8,8 @@ package:
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 6a57e4d1e93ccf1035604e3d9181dbe490281673833ce5be477c197b1195c840
+  patches:
+  - patches/remove-generator-on-windows.patch
 
 build:
   number: 0
