@@ -8,12 +8,11 @@ package:
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 6a57e4d1e93ccf1035604e3d9181dbe490281673833ce5be477c197b1195c840
-  patches:
-  - patches/remove-generator-on-windows.patch
+  patches:                                     # [win]
+  - patches/remove-generator-on-windows.patch  # [win]
 
 build:
   number: 0
-  skip: true  # [not win]
   script: {{ PYTHON }} -m pip install . -vv --no-build-isolation --no-deps
   missing_dso_whitelist:  # [s390x]
     - "$RPATH/ld64.so.1"  # [s390x]
@@ -22,14 +21,15 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - cmake
+    - make      # [not win]
+    - m2-patch  # [win]
   host:
     - python
-    - wheel
-    - setuptools >=30.3.0
-    - cmake >=3.16
-    - make  # [not win]
-    - pybind11 >=2.6.0
     - pip
+    - pybind11 >=2.6.0
+    - setuptools
+    - wheel
   run:
     - python
     - numpy
