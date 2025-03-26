@@ -1,0 +1,24 @@
+From 7468d7a45f6f789ca33cc2764d3538c96394dfbc Mon Sep 17 00:00:00 2001
+From: Andrii Osipov <aosipov@anaconda.com>
+Date: Wed, 26 Mar 2025 07:33:52 -0700
+Subject: [PATCH] fix osx linker
+
+---
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2e74346..650c04f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -79,6 +79,7 @@ nanobind_add_module(python MODULE LTO NOMINSIZE STABLE_ABI NB_STATIC)
+ set_target_properties(python PROPERTIES
+   PREFIX ""
+   OUTPUT_NAME _datasketches
++  LINK_FLAGS "-undefined dynamic_lookup"
+ )
+ 
+ target_include_directories(python
+-- 
+2.39.3 (Apple Git-146)
+

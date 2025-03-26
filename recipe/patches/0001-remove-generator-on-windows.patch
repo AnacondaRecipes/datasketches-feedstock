@@ -1,0 +1,27 @@
+From 22683ed99d1df76e131cd2ef52936023e38e9016 Mon Sep 17 00:00:00 2001
+From: Andrii Osipov <aosipov@anaconda.com>
+Date: Wed, 26 Mar 2025 06:48:40 -0700
+Subject: [PATCH] remove generator on windows
+
+---
+ setup.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index fdb7c2f..8bd64f6 100644
+--- a/setup.py
++++ b/setup.py
+@@ -59,8 +59,8 @@ class CMakeBuild(build_ext):
+                            cfg.upper(),
+                            extdir)]
+             if sys.maxsize > 2**32:
+-                cmake_args += ['-T', 'host=x64']
+-                cmake_args += ['-DCMAKE_GENERATOR_PLATFORM=x64']
++                #cmake_args += ['-T', 'host=x64']
++                #cmake_args += ['-DCMAKE_GENERATOR_PLATFORM=x64']
+                 build_args += ['--', '/m']
+         else:
+             cmake_args += ['-DCMAKE_BUILD_TYPE=' + cfg]
+-- 
+2.39.3 (Apple Git-146)
+
