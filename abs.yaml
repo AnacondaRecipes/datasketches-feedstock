@@ -5,4 +5,4 @@ upload_channels:
   - sfe1ed40
 
 channels:
-  - https://staging.continuum.io/prefect/fs/nanobind-feedstock/pr1/f1ad0e6
+  - https://staging.continuum.io/prefect/fs/nanobind-feedstock/pr1/4e963dd
