@@ -44,9 +44,8 @@ requirements:
 
 # Assertion errors: calculations problem appears only on s390x.
 {% set ignore_tests = "" %}
-{% set ignore_tests = " --ignore=tests/test_theta_basic_example.py" %}  # [s390x]
-{% set ignore_tests = ignore_tests + " --ignore=tests/async_writes_test.py" %}  # [s390x]
-{% set ignore_tests = ignore_tests + " --ignore=tests/TupleTest.py" %}  # [s390x]
+{% set ignore_tests = " --ignore=tests/theta_test.py" %}  # [s390x]
+{% set ignore_tests = ignore_tests + " --ignore=tests/tuple_test.py" %}  # [s390x]
 
 test:
   source_files:
