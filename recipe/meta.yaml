@@ -6,16 +6,23 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: c00d61da4695e00036e63f590999f584cc39246cbb147b171f375f792604a612
-  patches:
-    - patches/0001-add-ninja-generator.patch  # [win]
-    - patches/0002-fix-osx-linker.patch  # [osx]
-
+  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+    sha256: c00d61da4695e00036e63f590999f584cc39246cbb147b171f375f792604a612
+    patches:
+      - patches/0001-add-ninja-generator.patch  # [win]
+      - patches/0002-use-local-datasketches-cpp.patch
+      - patches/0003-fix-osx-linker.patch  # [osx]
+      - patches/0004-prevent-adding-debug-symbol-in-the-_datasketches-nam.patch  # [win]
+    folder: {{ name }}-{{ version }}
+  - url: https://github.com/apache/{{ name }}-cpp/archive/refs/tags/{{ version }}.tar.gz
+    sha256: 63e6bda660ee9730cc39746de87fd983118c28149e32ff9389fac98b27010a53
+    folder: {{ name }}-cpp-{{ version }}
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: |
+    cd {{ name }}-{{ version }}
+    {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: True  # [py<38]
   missing_dso_whitelist:  # [s390x]
     - "$RPATH/ld64.so.1"  # [s390x]
@@ -26,7 +33,6 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - git
     - cmake >=3.16
     - make  # [osx or linux]
     - patch  # [osx]
@@ -44,36 +50,40 @@ requirements:
 
 # Assertion errors: calculations problem appears only on s390x.
 {% set ignore_tests = "" %}
-{% set ignore_tests = " --ignore=tests/theta_test.py" %}  # [s390x]
-{% set ignore_tests = ignore_tests + " --ignore=tests/tuple_test.py" %}  # [s390x]
+{% set ignore_tests = " --ignore={{ name }}-{{ version }}/tests/theta_test.py" %}  # [s390x]
+{% set ignore_tests = ignore_tests + " --ignore={{ name }}-{{ version }}/tests/tuple_test.py" %}  # [s390x]
 
 test:
   source_files:
-    - tests
+    - {{ name }}-{{ version }}/tests
   imports:
     - datasketches
   commands:
     - pip check
-    - pytest -v {{ ignore_tests }} tests
+    - pytest -v {{ ignore_tests }} {{ name }}-{{ version }}/tests
   requires:
     - pip
     - pytest
 
 about:
   home: https://datasketches.apache.org
-  dev_url: https://github.com/apache/datasketches-cpp
-  doc_url: https://datasketches.apache.org/
   summary: The Apache DataSketches Library for Python
+  license: Apache-2.0
+  license_family: Apache
+  license_file:
+    - {{ name }}-{{ version }}/LICENSE
+    - {{ name }}-{{ version }}/NOTICE
+    - {{ name }}-cpp-{{ version }}/LICENSE
+    - {{ name }}-cpp-{{ version }}/NOTICE
+  dev_url: |
+    https://inspector.pypi.io/project/datasketches/5.2.0/packages/34/cd/659ae9fc53f34d6deafbe12162977654be5bb0a584e6afa6656337e13952/datasketches-5.2.0.tar.gz
+    https://github.com/apache/datasketches-cpp
+  doc_url: https://datasketches.apache.org/
   description: |
     A software library of stochastic streaming algorithms.
     In the analysis of big data there are often problem queries that don't scale because they require huge compute resources and time to generate exact results. Examples include count distinct, quantiles, most-frequent items, joins, matrix computations, and graph analysis.
     If approximate results are acceptable, there is a class of specialized algorithms, called streaming algorithms, or sketches that can produce results orders-of magnitude faster and with mathematically proven error bounds. For interactive queries there may not be other viable alternatives, and in the case of real-time analysis, sketches are the only known solution.
     This package provides a variety of sketches as described below. Wherever a specific type of sketch exists in Apache DataSketches packages for other languages, the sketches will be portable between languages (for platforms with the same endianness).
-  license: Apache-2.0
-  license_family: Apache
-  license_file:
-    - LICENSE
-    - NOTICE
 
 extra:
   recipe-maintainers:
