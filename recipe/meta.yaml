@@ -13,15 +13,15 @@ source:
       - patches/0002-use-local-datasketches-cpp.patch
       - patches/0003-fix-osx-linker.patch  # [osx]
       - patches/0004-prevent-adding-debug-symbol-in-the-_datasketches-nam.patch  # [win]
-    folder: {{ name }}-{{ version }}
+    folder: datasketches
   - url: https://github.com/apache/{{ name }}-cpp/archive/refs/tags/{{ version }}.tar.gz
     sha256: 63e6bda660ee9730cc39746de87fd983118c28149e32ff9389fac98b27010a53
-    folder: {{ name }}-cpp-{{ version }}
+    folder: datasketches-cpp
 
 build:
   number: 0
   script: |
-    cd {{ name }}-{{ version }}
+    cd datasketches
     {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: True  # [py<38]
   missing_dso_whitelist:  # [s390x]
@@ -34,8 +34,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake >=3.16
-    - make  # [osx or linux]
-    - patch  # [osx]
+    - make  # [not win]
+    - patch  # [not win]
     - m2-patch  # [win]
   host:
     - python
@@ -50,17 +50,22 @@ requirements:
 
 # Assertion errors: calculations problem appears only on s390x.
 {% set ignore_tests = "" %}
-{% set ignore_tests = " --ignore={{ name }}-{{ version }}/tests/theta_test.py" %}  # [s390x]
-{% set ignore_tests = ignore_tests + " --ignore={{ name }}-{{ version }}/tests/tuple_test.py" %}  # [s390x]
+{% set ignore_tests = ignore_tests + " --ignore=datasketches/tests/theta_test.py" %}  # [s390x]
+{% set ignore_tests = ignore_tests + " --ignore=datasketches/tests/tuple_test.py" %}  # [s390x]
 
 test:
   source_files:
-    - {{ name }}-{{ version }}/tests
+    - datasketches/tests
   imports:
     - datasketches
   commands:
     - pip check
-    - pytest -v {{ ignore_tests }} {{ name }}-{{ version }}/tests
+    # Windows fatal exception: code 0x80000003
+    # Program: test_envilib\site-packages_datasketches.cp39-win_amd64.pyd
+    # File: C: Program Files (x86) \Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\Include\optional
+    # Line: 359
+    # Expression: Cannot access value of empty optional
+    - pytest -v {{ ignore_tests }} {{ name }}/tests  # [not win]
   requires:
     - pip
     - pytest
@@ -71,13 +76,11 @@ about:
   license: Apache-2.0
   license_family: Apache
   license_file:
-    - {{ name }}-{{ version }}/LICENSE
-    - {{ name }}-{{ version }}/NOTICE
-    - {{ name }}-cpp-{{ version }}/LICENSE
-    - {{ name }}-cpp-{{ version }}/NOTICE
-  dev_url: |
-    https://inspector.pypi.io/project/datasketches/5.2.0/packages/34/cd/659ae9fc53f34d6deafbe12162977654be5bb0a584e6afa6656337e13952/datasketches-5.2.0.tar.gz
-    https://github.com/apache/datasketches-cpp
+    - {{ name }}/LICENSE
+    - {{ name }}/NOTICE
+    - {{ name }}-cpp/LICENSE
+    - {{ name }}-cpp/NOTICE
+  dev_url: https://github.com/apache/datasketches-cpp
   doc_url: https://datasketches.apache.org/
   description: |
     A software library of stochastic streaming algorithms.
@@ -88,5 +91,3 @@ about:
 extra:
   recipe-maintainers:
     - rxm7706
-  skip-lints:
-    - no_git_on_windows

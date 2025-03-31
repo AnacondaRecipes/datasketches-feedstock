@@ -29,8 +29,8 @@ index 2e74346..4052906 100644
 -set(datasketches_INSTALL_DIR ${INSTALL_DIR})
 -message("Source dir of datasketches = ${datasketches_INSTALL_DIR}")
 +# Set the path to the datasketches-cpp headers
-+# This assumes the datasketches-cpp source is in ${CMAKE_SOURCE_DIR}/../datasketches-cpp-5.2.0
-+set(DATASKETCHES_CPP_DIR "${CMAKE_SOURCE_DIR}/../datasketches-cpp-5.2.0")
++# This assumes the datasketches-cpp source is in ${CMAKE_SOURCE_DIR}/../datasketches-cpp
++set(DATASKETCHES_CPP_DIR "${CMAKE_SOURCE_DIR}/../datasketches-cpp")
 +if(NOT EXISTS "${DATASKETCHES_CPP_DIR}")
 +  message(FATAL_ERROR "datasketches-cpp source directory not found at ${DATASKETCHES_CPP_DIR}. Please check the path.")
 +endif()
