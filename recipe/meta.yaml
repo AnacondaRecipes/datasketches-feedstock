@@ -40,13 +40,13 @@ requirements:
   host:
     - python
     - pip
-    - numpy
+    - numpy {{ numpy }}
     - nanobind >=1.6
     - setuptools >=30.3.0
     - wheel
   run:
     - python
-    - numpy
+    - numpy {{ numpy }}
 
 # Assertion errors: calculations problem appears only on s390x.
 {% set ignore_tests = "" %}
@@ -61,7 +61,7 @@ test:
   commands:
     - pip check
     # Windows fatal exception: code 0x80000003
-    # Program: test_envilib\site-packages_datasketches.cp39-win_amd64.pyd
+    # Program: test_envilib\site-packages\_datasketches.cp39-win_amd64.pyd
     # File: C: Program Files (x86) \Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\Include\optional
     # Line: 359
     # Expression: Cannot access value of empty optional
@@ -77,10 +77,8 @@ about:
   license_family: Apache
   license_file:
     - {{ name }}/LICENSE
-    - {{ name }}/NOTICE
     - {{ name }}-cpp/LICENSE
-    - {{ name }}-cpp/NOTICE
-  dev_url: https://github.com/apache/datasketches-cpp
+  dev_url: https://github.com/apache/datasketches-python
   doc_url: https://datasketches.apache.org/
   description: |
     A software library of stochastic streaming algorithms.
