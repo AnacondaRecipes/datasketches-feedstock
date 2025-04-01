@@ -26,8 +26,6 @@ build:
   skip: True  # [py<38]
   missing_dso_whitelist:  # [s390x]
     - "$RPATH/ld64.so.1"  # [s390x]
-  ignore_run_exports:
-    - numpy
 
 requirements:
   build:
@@ -46,7 +44,7 @@ requirements:
     - wheel
   run:
     - python
-    - numpy {{ numpy }}
+    - numpy
 
 # Assertion errors: calculations problem appears only on s390x.
 {% set ignore_tests = "" %}
