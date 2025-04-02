@@ -1,0 +1,26 @@
+From 381b3556a9d38ced52c62865d735a9fed500c78f Mon Sep 17 00:00:00 2001
+From: Andrii Osipov <aosipov@anaconda.com>
+Date: Mon, 31 Mar 2025 02:11:18 -0700
+Subject: [PATCH] prevent adding debug symbol in the _datasketches name on win
+
+---
+ CMakeLists.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 2e74346..3f8fa7a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -78,7 +78,8 @@ nanobind_add_module(python MODULE LTO NOMINSIZE STABLE_ABI NB_STATIC)
+ 
+ set_target_properties(python PROPERTIES
+   PREFIX ""
+-  OUTPUT_NAME _datasketches
++  OUTPUT_NAME "_datasketches"
++  DEBUG_POSTFIX ""  # Prevent adding 'd' suffix in debug builds
+ )
+ 
+ target_include_directories(python
+-- 
+2.39.3 (Apple Git-146)
+
