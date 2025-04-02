@@ -56,7 +56,7 @@ test:
     # File: C: Program Files (x86) \Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\Include\optional
     # Line: 359
     # Expression: Cannot access value of empty optional
-    - pytest -v {{ ignore_tests }} {{ name }}/tests  # [not win]
+    - pytest -v {{ name }}/tests  # [not win]
   requires:
     - pip
     - pytest
