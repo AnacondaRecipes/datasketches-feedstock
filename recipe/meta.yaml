@@ -24,8 +24,6 @@ build:
     cd datasketches
     {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   skip: True  # [py<38]
-  missing_dso_whitelist:  # [s390x]
-    - "$RPATH/ld64.so.1"  # [s390x]
 
 requirements:
   build:
@@ -45,11 +43,6 @@ requirements:
   run:
     - python
     - numpy
-
-# Assertion errors: calculations problem appears only on s390x.
-{% set ignore_tests = "" %}
-{% set ignore_tests = ignore_tests + " --ignore=datasketches/tests/theta_test.py" %}  # [s390x]
-{% set ignore_tests = ignore_tests + " --ignore=datasketches/tests/tuple_test.py" %}  # [s390x]
 
 test:
   source_files:

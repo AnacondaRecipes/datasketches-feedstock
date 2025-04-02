@@ -3,6 +3,3 @@ build_env_vars:
 
 upload_channels:
   - sfe1ed40
-
-channels:
-  - https://staging.continuum.io/prefect/fs/nanobind-feedstock/pr1/642e159
