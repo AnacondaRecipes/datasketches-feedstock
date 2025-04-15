@@ -11,15 +11,14 @@ source:
     patches:
       - patches/0001-add-ninja-generator.patch  # [win]
       - patches/0002-use-local-datasketches-cpp.patch
-      - patches/0003-fix-osx-linker.patch  # [osx]
-      - patches/0004-prevent-adding-debug-symbol-in-the-_datasketches-nam.patch  # [win]
+      - patches/0003-prevent-adding-debug-symbol-in-the-_datasketches-nam.patch  # [win]
     folder: datasketches
   - url: https://github.com/apache/{{ name }}-cpp/archive/refs/tags/{{ version }}.tar.gz
     sha256: 63e6bda660ee9730cc39746de87fd983118c28149e32ff9389fac98b27010a53
     folder: datasketches-cpp
 
 build:
-  number: 0
+  number: 1
   script: |
     cd datasketches
     {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
