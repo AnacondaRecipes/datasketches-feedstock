@@ -16,7 +16,7 @@ source:
     folder: datasketches-cpp
 
 build:
-  number: 1
+  number: 2
   script: |
     cd datasketches
     {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
@@ -24,12 +24,11 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - cmake >=3.16
     - make  # [not win]
-    - patch  # [not win]
-    - m2-patch  # [win]
   host:
     - python
     - pip
